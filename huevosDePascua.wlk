@@ -5,6 +5,7 @@ object huevoRepostero {
     }
 
     method tieneChocolateBlanco() = true
+    method tieneChocolateAmargo() = false
 }
 
 object huevoMixto {
@@ -14,6 +15,7 @@ object huevoMixto {
   }
 
   method tieneChocolateBlanco() = true
+  method tieneChocolateAmargo() = false
 }
 
 object conejo {
@@ -25,11 +27,12 @@ object conejo {
     }
     
     method tieneChocolateAmargo() = true
+    method tieneChocolateBlanco() = false
 }
 
 object blisterHuevitos {
     
-    var property huevosChocolate = 15
+    var property huevosChocolate = 14
 
     method calorias(){
         return (huevosChocolate * 100) + self.caloriasHuevosExtras()
@@ -45,16 +48,17 @@ object blisterHuevitos {
     }
 
     method tieneChocolateBlanco() = (self.huevosExtraChocolateBlanco() > 0)
+    method tieneChocolateAmargo() = false
 
 }
 
 object matrioshka {
 
-    var property huevoAdentro = conejo
+    var property huevoAdentro = blisterHuevitos
     var property decoracion = flor
 
     method calorias(){
-        return 3000 +  ( huevoAdentro.calorias() + flor )
+        return 3000 +  ( huevoAdentro.calorias() + decoracion.calorias() )
     }
 
     method tieneChocolateAmargo() = true
@@ -63,7 +67,7 @@ object matrioshka {
 
 object flor{
     
-    var property petalos = 0
+    var property petalos = 7
 
     method calorias(){
         return petalos * 100
@@ -85,18 +89,22 @@ object arbol{
 
 object caceria{
 
-    const property huevosAEncontrar = [huevoRepostero, huevoMixto, conejo, blisterHuevitos, matrioshka, huevoRepostero]
+    const property huevosAEncontrar = [matrioshka, huevoRepostero, conejo, huevoMixto]
 
     method cantidadDeHuevosSinEncontrar(){
         return huevosAEncontrar.size()
     }
 
-    method huevosChocoBlancoSinEncontrar(){
+    method cantidadHuevosChocoBlancoSinEncontrar(){
         return huevosAEncontrar.filter({h => h.tieneChocolateBlanco()}).size()
     }
 
     method talHuevoNoFueEncontrado(huevo){
-        return huevosAEncontrar.contains({h => h == huevo})
+        return huevosAEncontrar.contains(huevo)
+    }
+
+    method huevosChocoBlancoSinEncontrar(){
+       return huevosAEncontrar.filter({h => h.tieneChocolateBlanco()})
     }
 
     method huevoConMasCalorias(){
@@ -112,7 +120,7 @@ object caceria{
 
 object ana{
 
-    const huevosComidos = []
+    const property huevosComidos = []
     
     method encontrarHuevo(unHuevo){
         huevosComidos.add( caceria.huevosAEncontrar().find({h => h == unHuevo}) )
@@ -125,7 +133,7 @@ object ana{
     }
 
     method encontrarHuevosRestantes(){
-        huevosComidos.add( caceria.huevosAEncontrar() )
+        huevosComidos.addAll( caceria.huevosAEncontrar() )
         caceria.huevosAEncontrar().removeAll()
     }
 
@@ -153,8 +161,8 @@ object jose{
     }
 
     method encontrarHuevosRestantes(){
-        ultimoHuevoComido = ( caceria.huevosAEncontrar() )
-        caceria.huevosAEncontrar().removeAll()
+        ultimoHuevoComido = conejo
+        caceria.huevosAEncontrar().clear()
     }
 
     method estaEnfermo(){
@@ -164,8 +172,26 @@ object jose{
 
 object tito{
 
-    method estaEnfermo(){
+    method encontrarHuevo(unHuevo){
+    
+        caceria.huevosAEncontrar().remove({h => h == unHuevo})
+    }
 
+    method encontrarPrimerHuevo(){
+        
+        caceria.huevosAEncontrar().remove(caceria.huevosAEncontrar().first())
+    }
+
+    method encontrarHuevosRestantes(){
+        
+        caceria.huevosAEncontrar().removeAll()
+    }
+    
+    
+    
+    
+    method estaEnfermo(){
+    
     }
 }
 

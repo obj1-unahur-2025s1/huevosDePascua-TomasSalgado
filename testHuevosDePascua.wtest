@@ -10,3 +10,25 @@ describe "group of tests" {
   }
 
 }
+
+test "la matrioshka es el huevo con mas calorias"{
+
+  assert.equals(matrioshka, caceria.huevoConMasCalorias())
+}
+
+test "test comprobando que todo funcione"{
+
+  ana.encontrarPrimerHuevo()
+  assert.that( ana.huevosComidos().contains(matrioshka))
+  assert.equals(3, caceria.cantidadDeHuevosSinEncontrar())
+  assert.equals(2, caceria.cantidadHuevosChocoBlancoSinEncontrar())
+  assert.that(caceria.talHuevoNoFueEncontrado(conejo))
+  assert.equals([huevoRepostero, huevoMixto], caceria.huevosChocoBlancoSinEncontrar())
+  tito.encontrarHuevo(huevoMixto)
+  jose.encontrarHuevosRestantes()
+  assert.that(ana.estaEnfermo())
+  assert.that(jose.estaEnfermo())
+}
+
+
+
